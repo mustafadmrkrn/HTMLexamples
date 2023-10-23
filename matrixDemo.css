@@ -1,0 +1,22 @@
+body {
+    background-color: #000;
+  }
+  
+  #kodfun {
+    font: 500 4rem monospace;
+    background-color: black;
+    color: #86c8a8;
+    text-shadow: 0.01em 0.01em 0.2em #86c8a8;
+  }
+  
+  #kodfun::after {
+    content: "|";
+    animation: blink 1s step-end infinite;
+  }
+  
+  @keyframes blink {
+    50% {
+      opacity: 0;
+    }
+  }
+  
