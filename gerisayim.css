@@ -1,0 +1,48 @@
+body {
+    background-color: orange; /* Arka plan siyah */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.countdown-container {
+    text-align: center;
+}
+
+.select {
+    padding: 10px;
+    font-size: 18px;
+    border: 1px solid #009688;
+    border-radius: 5px;
+    background-color: #ffffff; /* Açılır kutu arka plan rengi */
+    color: white; /* Açılır kutu metin rengi */
+    width: 70px;
+    appearance: none;
+    margin: 0 10px;
+}
+
+.select:hover {
+    border-color: #33cc99;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 18px;
+    border: none;
+    border-radius: 5px;
+    background-color: #33cc99; /* Yeşil düğme rengi */
+    color: white; /* Düğme metin rengi */
+    cursor: pointer;
+}
+
+button:disabled {
+    background-color: #666;
+    cursor: not-allowed;
+}
+
+.countdown-timer {
+    font-size: 50px;
+    text-transform: uppercase;
+}

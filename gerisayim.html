@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geri Sayım</title>
+    <link rel="stylesheet" href="gerisayim.css">
+</head>
+<body>
+    <div class="countdown-container">
+        <div class="countdown">
+            <label for="hours">Saat: </label>
+            <select id="hours" class="select">
+                <!-- Saat seçenekleri -->
+            </select>
+
+            <label for="minutes">Dakika: </label>
+            <select id="minutes" class="select">
+                <!-- Dakika seçenekleri -->
+            </select>
+
+            <label for="seconds">Saniye: </label>
+            <select id="seconds" class="select">
+                <!-- Saniye seçenekleri -->
+            </select>
+
+            <button id="start">Başlat</button>
+            <button id="stop">Durdur</button>
+        </div>
+
+        <div class="countdown-timer">
+            <span id="countdown">00:00:00</span>
+        </div>
+    </div>
+    <script src="gerisayim.js"></script>
+</body>
+</html>
