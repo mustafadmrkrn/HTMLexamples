@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geri Sayım</title>
+    <style>
+        body {
+            background-color: orange; /* Arka plan siyah */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        
+        .countdown-container {
+            text-align: center;
+        }
+        
+        .select {
+            padding: 10px;
+            font-size: 18px;
+            border: 1px solid #009688;
+            border-radius: 5px;
+            background-color: #ffffff; /* Açılır kutu arka plan rengi */
+            color: white; /* Açılır kutu metin rengi */
+            width: 70px;
+            appearance: none;
+            margin: 0 10px;
+        }
+        
+        .select:hover {
+            border-color: #33cc99;
+        }
+        
+        button {
+            padding: 10px 20px;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            background-color: #33cc99; /* Yeşil düğme rengi */
+            color: white; /* Düğme metin rengi */
+            cursor: pointer;
+        }
+        
+        button:disabled {
+            background-color: #666;
+            cursor: not-allowed;
+        }
+        
+        .countdown-timer {
+            font-size: 50px;
+            text-transform: uppercase;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="countdown-container">
+        <div class="countdown">
+            <label for="hours">Saat: </label>
+            <select id="hours" class="select">
+                <!-- Saat seçenekleri -->
+            </select>
+
+            <label for="minutes">Dakika: </label>
+            <select id="minutes" class="select">
+                <!-- Dakika seçenekleri -->
+            </select>
+
+            <label for="seconds">Saniye: </label>
+            <select id="seconds" class="select">
+                <!-- Saniye seçenekleri -->
+            </select>
+
+            <button id="start">Başlat</button>
+            <button id="stop">Durdur</button>
+        </div>
+
+        <div class="countdown-timer">
+            <span id="countdown">00:00:00</span>
+        </div>
+    </div>
+    <script>
+
+const hoursSelect = document.getElementById("hours");
+const minutesSelect = document.getElementById("minutes");
+const secondsSelect = document.getElementById("seconds");
+const startButton = document.getElementById("start");
+const stopButton = document.getElementById("stop");
+const countdownElement = document.getElementById("countdown");
+
+let countdownTimer;
+
+function updateCountdownDisplay(hours, minutes, seconds) {
+    countdownElement.textContent = `${hours}:${minutes}:${seconds}`;
+}
+
+function startCountdown() {
+    const hours = parseInt(hoursSelect.value) || 0;
+    const minutes = parseInt(minutesSelect.value) || 0;
+    const seconds = parseInt(secondsSelect.value) || 0;
+
+    if (hours === 0 && minutes === 0 && seconds === 0) {
+        return;
+    }
+
+    startButton.disabled = true;
+    hoursSelect.disabled = true;
+    minutesSelect.disabled = true;
+    secondsSelect.disabled = true;
+
+    let totalSeconds = hours * 3600 + minutes * 60 + seconds;
+
+    countdownTimer = setInterval(() => {
+        if (totalSeconds <= 0) {
+            stopCountdown();
+        } else {
+            const h = Math.floor(totalSeconds / 3600);
+            const m = Math.floor((totalSeconds % 3600) / 60);
+            const s = totalSeconds % 60;
+
+            updateCountdownDisplay(
+                h.toString().padStart(2, '0'),
+                m.toString().padStart(2, '0'),
+                s.toString().padStart(2, '0')
+            );
+
+            totalSeconds--;
+        }
+    }, 1000);
+}
+
+function stopCountdown() {
+    clearInterval(countdownTimer);
+    startButton.disabled = false;
+    hoursSelect.disabled = false;
+    minutesSelect.disabled = false;
+    secondsSelect.disabled = false;
+}
+
+startButton.addEventListener("click", startCountdown);
+stopButton.addEventListener("click", stopCountdown);
+
+
+    </script>
+</body>
+</html>

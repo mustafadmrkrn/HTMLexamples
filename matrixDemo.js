@@ -1,9 +1,9 @@
 const kodfun = document.getElementById("kodfun");
 let lines = [
-  "Wake up, Neo...",
-  "The Matrix has you...",
-  "Follow KodFun on Instagram.",
-  "Knock, knock, Neo."
+  "Uyan Artik Sezin",
+  "The Matrix tam olarak sensin...",
+  "Yesil Tavsani takip et.",
+  "Sana yapman gerekenleri soyleyecek."
 ];
 let i = 0,
   j = 0,

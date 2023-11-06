@@ -1,10 +1,53 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link rel="stylesheet" type="text/css" href="matrixDemo.css">
+        <style>
+            body {
+                background-color: #000;
+              }
+              
+              #kodfun {
+                font: 500 4rem monospace;
+                background-color: black;
+                color: #86c8a8;
+                text-shadow: 0.01em 0.01em 0.2em #86c8a8;
+              }
+              
+              #kodfun::after {
+                content: "|";
+                animation: blink 1s step-end infinite;
+              }
+              
+              @keyframes blink {
+                50% {
+                  opacity: 0;
+                }
+              }            
+        </style>
         <body>
             <span id="kodfun"></span>
-            <script src="matrixDemo.js"></script>
+            <script>
+                const kodfun = document.getElementById("kodfun");
+                let lines = [
+                  "Uyan Artik Mesut Mihraç",
+                  "The Matrix tam olarak sensin...",
+                  "Beyaz Kaplanı takip et.",
+                  "Sana yapman tüm kodlamaları ogretecek."
+                ];
+                let i = 0,
+                  j = 0,
+                  wait = 6;
+                setInterval(() => {
+                  if (wait-- > 0) return;
+                  if (wait == -1) kodfun.innerHTML = "";
+                  if (i < lines.length)
+                    if (j < lines[i].length) kodfun.innerHTML += lines[i][j++];
+                    else (wait = 8), (j = 0), i++;
+                  else (wait = 8), (i = j = 0);
+                }, 200);
+                 
+
+            </script>
         </body>
     </head>
 </html>
