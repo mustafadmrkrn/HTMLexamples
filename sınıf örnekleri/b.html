@@ -10,26 +10,58 @@
       background-color: aqua;
       border-radius: 4px;
       border: 3px solid black;
-
     }
-
     .table tr td {
       border-bottom: 2px solid black;
       /* Her hücrenin alt kenarına çizgi ekle */
     }
+    .form-control {
+      text-align: center;
+      display: center;
+    }
   </style>
 </head>
 
-<body>
-  <h1 style="color:blue; font-size:60px;">Başlık 1</h1>
-  <h1>HTML Ornek</h1>
-  <h2>Ornek 1</h2>
-  <h3>Ornek a</h3>
+<body style="background-color: grey;"> <!-- //buradan sonra gördüklerimiz yeni hafta -->
+  <h1 style="font-family: Verdana, Geneva, Tahoma, sans-serif; font-size: 300%; 
+  text-align: center; color: brown;">HTML Ornek</h1>
   <p>İlk HTML Dosyam, bu dosya bana kodlama fırsatı veriyor. </p>
   <p>This is a paragraph.</p>
   <p>This is another paragraph.</p>
   <p style="color:red;">This is a red paragraph.</p>
   <p style="color: blue;" title="I'm a tooltip">This is a paragraph.</p>
+  <address>
+    Written by John Doe.<br> 
+    Visit us at:<br>
+    Example.com<br>
+    Box 564, Disneyland<br>
+    USA
+    </address>
+    <form class="form-control">
+      <div class="mb-3">
+        <label for="exampleInputEmail1" class="form-label">Email address</label>
+        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+        <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+      </div>
+      <div class="mb-3">
+        <label for="exampleInputPassword1" class="form-label">Password</label>
+        <input type="password" class="form-control" id="exampleInputPassword1">
+      </div>
+      <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" id="exampleCheck1">
+        <label class="form-check-label" for="exampleCheck1">Check me out</label>
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+
+  <!-- //buradan sonra gördüklerimiz yeni hafta -->
+  <p style="text-transform: uppercase; color: chartreuse;" title="Son Özellik" >demirkiran</p>
+  <pre>
+    İlim ilim bilmektir
+    İlim kendin bilmektir
+    Sen kendin bilmezsin
+    Ya nice okumaktır...
+  </pre>
   
     <a href="https://www.google.com">Hakkımızda</a><br><br>
     <img src="köpek.jpeg" alt="W3Schools.com" width="200" height="250">

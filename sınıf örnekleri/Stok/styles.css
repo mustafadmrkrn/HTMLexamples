@@ -8,9 +8,19 @@ body {
     margin: 0;
 }
 
-.logo-container {
-    text-align: center;
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 20px;
+}
+
+.logo-container {
+    order: 1; /* Logo'nun sağda olmasını sağlar */
+}
+
+.logo-container img {
+    max-width: 100%;
 }
 
 .form-container {
@@ -23,7 +33,7 @@ label {
 }
 
 input {
-    width: calc(100% - 12px); /* Eski genişliği */
+    width: calc(100% - 12px);
     padding: 5px;
     margin-bottom: 10px;
 }

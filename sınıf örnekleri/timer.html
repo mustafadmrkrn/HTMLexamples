@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Timer Countdown</title>
+<style>
+input[type="number"] {
+font-size: 50px;
+}
+  body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    height: 50vh;
+    margin: 0;
+    background-color: darkslategray;
+    font-size: 50px;
+    font-style: inherit;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+
+  }
+  .countdown {
+  float: left;
+  font-size: 48px; /* Yazı boyutunu 48 piksel olarak ayarla */
+  font-weight: bold; /* Kalın yazı tipi kullan */
+  color: red; /* Yeşil renk kullan */
+  text-align: center; /* Metni ortala */
+  text-align: left;
+}
+
+</style>
+</head>
+<body>
+  <div>
+    <label for="hoursInput">Saat:</label>
+    <input type="number" id="hoursInput" min="0" max="24" value="0">
+    <label for="minutesInput">Dakika:</label>
+    <input type="number" id="minutesInput" min="0" max="59" value="0">
+    <label for="secondsInput">Saniye:</label>
+    <input type="number" id="secondsInput" min="0" max="59" value="10">
+    <button onclick="startCountdown()">Başlat</button>
+    </div>
+
+  <div id="countdownDisplay" class="countdown"></div>
+
+  <!-- Alarm sesi -->
+  <audio id="alarmSound">
+    <source src="alarm.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <script>
+    let hours = 0;
+    let minutes = 0;
+    let seconds = 0;
+    let countdownInterval;
+
+    function startCountdown() {
+      hours = parseInt(document.getElementById('hoursInput').value);
+      minutes = parseInt(document.getElementById('minutesInput').value);
+      seconds = parseInt(document.getElementById('secondsInput').value);
+
+      clearInterval(countdownInterval);
+      updateCountdown();
+      countdownInterval = setInterval(updateCountdown, 1000);
+    }
+
+    function updateCountdown() {
+      if (hours === 0 && minutes === 0 && seconds === 0) {
+        clearInterval(countdownInterval);
+        document.getElementById('countdownDisplay').innerHTML = 'Süre doldu!';
+      } else {
+        if (seconds === 0) {
+          if (minutes > 0) {
+            minutes--;
+            seconds = 59;
+          } else if (hours > 0) {
+            hours--;
+            minutes = 59;
+            seconds = 59;
+          }
+        } else {
+          seconds--;
+        }
+        const formattedHours = String(hours).padStart(2, '0');
+        const formattedMinutes = String(minutes).padStart(2, '0');
+        const formattedSeconds = String(seconds).padStart(2, '0');
+
+        document.getElementById('countdownDisplay').innerHTML = `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+      }
+    }
+  </script>
+</body>
+</html>
