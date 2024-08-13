@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kodlama Örnekleri 7</title>
+</head>
+<body>
+    #form türleri isim eposta otomatik tamamlama
+    <form autocomplete="on">
+        Ad: <input type="text" name="ad"><br>
+        Eposta: <input type="email" name="email" autocomplete="off"><br>
+        <input type="submit" value="gönder">
+    </form><br>
+
+    #form türleri açılır menü sistemi 
+
+    <form autocomplete="on">
+        <input list="sporlar">
+
+        <datalist id="sporlar">
+            <option value="Futbol"></option>
+            <option value="Basketbol"></option>
+            <option value="voleybol"></option>
+            <option value="Tenis"></option>
+            <option value="Yüzme"></option>
+        </datalist>
+    </form><br>
+
+    #text, search, url, tel, email, ve password input tiplerinde kutunun içine bir metin mesaj yazar. Kullanıcı girdi yapmaya başladığı anda mesaj kaybolur:
+
+    <form>
+        <input type="text" name="ad" placeholder="İsminizi Giriniz">
+    </form><br>
+
+    #Html sayfalarına ses dosyaları ekleyebiliriz
+    <form>
+        <audio controls>
+            <source src="ses.mp3" type="audio/mpeg">
+        </audio>
+
+    </form><br>
+    
+    #form sayfası ile video dosyası etiketleme
+    <form>
+        <video width="400" height="340" controls>
+            <source src="film.mp4" type="video/mp4">
+        </video>
+    </form>
+
+    
+</body>
+</html>

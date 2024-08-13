@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Kodlama Örnekleri 6</title>
 </head>
 <body>
 
@@ -24,7 +24,7 @@
         Şifre: <input type="password" name="psw">
     </form><br>
 
-    #form Türü dördüncü Ad-Soyad 
+    #form Türü dördüncü Ad-Soyad Email Türü
 
     <form action="/sunucuSayfasi.php">
         Ad: <br>
@@ -32,7 +32,52 @@
         Soyad: <br>
         <input type="text" name="Soyad" value="Mehmet"><br><br>
         <input type="submit" value="Gönder">
-    </form>
+    </form><br><br>
+
+    #form Türü Beşinci Dosya yükleme
+
+    <form>
+        Bir Dosya seç: <input type="file" name="dosya">
+    </form><br>
+
+    #form Türü altıncı Tarih girdisi
+
+    <form>
+        <input type="month" name="Ay">
+    </form><br>
+
+    #form türü yedinci Adet sayı giriş
+
+    <form>
+        Adet: <input type="number" name="adet" min="0" max="100" step="5" value="40">
+    </form><br>
+
+    #form Türü sekizinci değer atama
+
+    <form>
+        Değer: <input type="range" name="deger" min="0" max="10">
+    </form><br>
+
+    #form türü dokuzuncu değer girme string
+
+    <form>
+        Ad: <br>
+        <input type="text" name="ad" value="ahmet" readonly>
+    </form><br>
+    
+    #form türü onuncu değer girme disabled
+
+    <form>
+        Ad: <br>
+        <input type="text" name="ad" value="ahmet" disabled>
+    </form><br>
+
+    #form türü onbirinci değer girme sınırlı karakter
+    <form>
+        Ad: <br>
+        <input type="text" name="ad" value="ahmet" maxlength="6">
+    </form><br>
+
 
 </body>
 </html>
