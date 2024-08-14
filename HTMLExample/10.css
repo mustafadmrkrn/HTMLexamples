@@ -1,0 +1,19 @@
+h1 {
+    color: coral;
+    text-align: right;
+}
+
+p{
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 23px;
+}
+
+#renkDegeri {
+    color:green;
+    font-size: 20px;
+}
+
+.italikYaz{
+    font-style: italic;
+    color:red;
+}
