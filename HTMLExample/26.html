@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grid ile Sayfa Tasarımı</title>
+    <style>
+        body {
+            display: grid;
+            grid-template-areas: 
+            "baslik baslik baslik"
+            "menu icerik reklam"
+            "altlik altlik altlik";
+            grid-template-columns: 20% 1fr 15%;
+            grid-template-rows: 60px 1fr 15%;
+            grid-gap: 10px;
+            height: 100vh;
+            margin: 0;
+        }
+        
+        header,
+        footer,
+        article,
+        nav,
+        div {
+            padding: 20px;
+            background: darkgray;
+        }
+
+        #sayfaBasligi {
+            grid-area: baslik;
+        }
+        
+        #sayfaAltlik {
+            grid-area: altlik;
+        }
+    </style>
+</head>
+<body>
+    <header id="sayfaBasligi">Başlık</header>
+    <nav>Menu</nav>
+    <article>İçerik</article>
+    <div>Reklam</div>
+    <footer id="sayfaAltlik">Altlık</footer>
+</body>
+</html>
