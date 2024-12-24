@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=,, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        
+        html, body {
+            background-color: #ddd;
+        }
+        
+        .clock {
+            position: absolute;
+            margin: auto;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            width: 600px;
+            height: 350px;
+            background-color: #333;
+            text-align: center;
+            color: #fff;
+            font-family: 'Quicksand', 'Helvetica', Arial, sans-serif;
+            font-weight: lighter;
+        }
+        
+        .inside {
+            position: absolute;
+            margin: auto;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            width: 500px;
+            height: 250px;
+            background-color: #222;
+        }
+        
+        .content {
+            margin-top: 40px;
+            width: auto;
+            height: auto;
+            text-align: center;
+        }
+        
+        .days {
+            color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .days span {
+            margin-left: 10px;
+            font-size: 1rem;
+        }
+        
+        .text{
+            position: absolute;
+            margin: auto;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            margin-top: 100px;
+            font-size: 2.5em;
+        }
+        
+        #time {
+            font-size: 1.5rem;
+        }
+        
+        #date {
+            margin-top: 100px;
+            margin-left: -100px;
+        }
+        
+        #cal img {
+            width: 30px;
+            height: 30px;
+        }
+        
+        span#day {
+            position: absolute;
+            margin-top: 5px;
+            margin-left: 10px;
+        }
+        
+        span#month {
+            position: absolute;
+            margin-top: 5px;
+            margin-left: 45px;
+        
+        }
+        
+        span#year {
+            position: absolute;
+            margin-top: 5px;
+            margin-left: 105px;
+        
+        }
+        
+    </style>
+
+</head>
+<body>
+    <div class="clock">
+        <div class="inside">
+            <div class="content">
+                <p class='days'><span id="sun">SUN</span>&nbsp;<span id="mon">MON</span>&nbsp;<span id=tus"">TUS</span>&nbsp;<span id="wed">WED</span>&nbsp;<span id="thu">THU</span>&nbsp;<span id="fri">FRI</span>&nbsp;<span id="sat">SAT</span></p>
+                <br>
+                <p class='text'><span id='hours'></span>:<span id='min'></span>:<span id='sec'></span>&nbsp;&nbsp;<span id='time'></span></p>
+                <p id=date>
+                    <span id='cal'><img src="https://i.imgur.com/DzEzjHh.png?1" alt="cal" /></span>
+                    <span id='day'></span>
+                    <span id='month'></span>
+                    <span id='year'></span>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var daysofweek = ['sun', 'mon', 'tus', 'wed', 'thu', 'fri', 'sat'];
+var month =['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+
+function clock(){
+    // setting up my variables
+    var today = new Date();
+    var h = today.getHours();
+    var m = today.getMinutes();
+    var s = today.getSeconds();
+    var day = h<11 ? 'AM': 'PM';
+    var daytoday = today.getDay();
+    var date = today.getDate();
+    var mon = today.getMonth();
+    var year = today.getFullYear();
+
+    // adding leading zeros to them
+    h = h<10? '0'+h: h;
+    m = m<10? '0'+m: m;
+    s = s<10? '0'+s: s;
+
+    // writing it down in the document
+    document.getElementById('hours').innerHTML = h;
+    document.getElementById('min').innerHTML = m;
+    document.getElementById('sec').innerHTML = s;
+    document.getElementById('time').innerHTML = day;
+    document.getElementById(''+daysofweek[daytoday]+'').style.color = '#fff';
+    document.getElementById('day').innerHTML = date;
+    document.getElementById('month').innerHTML = month[mon];
+    document.getElementById('year').innerHTML = year;
+
+}
+var inter = setInterval(clock,400);
+
+    </script>
+</body>
+</html>
