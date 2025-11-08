@@ -1,0 +1,16 @@
+curl 'https://robot.meb.gov.tr/hesabim/robot-ekle' \
+  -H 'accept: */*' \
+  -H 'accept-language: tr-TR,tr;q=0.9,en-US;q=0.8,en;q=0.7' \
+  -H 'content-type: application/json' \
+  -b 'meb-robot-yarismasi-ziyaret=188.119.27.157; .AspNetCore.Cookies=CfDJ8FPKG4kUSmdCghqky2mw4CbmOFaT1j3aTIYzznOAPJuQvUtimc27EKYogd-9eh9KEvlFeeY706DXW6kBGhRKQKEIJnKCeP5dnyA_uwsgNp9tw0gHdmTvuKxp-zD-bEyIjLE2IpEWb_Wto3cYine5F0djGItwDNQWxzk1r6q_QbW709wO4MTr-S8CQF224YqRnFkf-W0uxBg6AYkeME0gVM0LrZFvK4TS_rs69T5643AkQeSm4dpmE1e5XCjk02me6XE6--cBZmf9w_HreFBWS-Np-vYTcBV_5DRJFHp4KztHP-5FojDwDkrHgdufpyY7jvePAPy59OoYPHj8kYUXLPzcBX4mxFCIh_BiFD2I8IIHlHeJJhR-NiZHG_ksqOEQkWelII3jC-ah30a7Tl6WNctmR_bKttITJEfRWQfoUWW11W6uwZDfzmzdNRYxEms-QYaziWL1fYuKRN2eMf5MXpxkvQJ7Wn3yj_fqnkwqs-lBS-qtQ1HKd_uBYufU4Mv5QiGeGcefE1wTorSLGO69A-Ld_CJlXhFKhMQhei4lYJP97fndfj_e_HiIQ2PngG82iIugaMwNO0hHKe-mRQUwtysxtlTHlPwVvq24V0d0wHWEF5zNT4p_iJynkceWfrRYGxIaVwK1YPoTm6lT-WZoGh3nkbYGJrInE0HSGWVnXxk7-MDZyyhqn6crB-MBIyVq7g' \
+  -H 'origin: https://robot.meb.gov.tr' \
+  -H 'priority: u=1, i' \
+  -H 'referer: https://robot.meb.gov.tr/hesabim/robot-ekle' \
+  -H 'sec-ch-ua: "Chromium";v="134", "Not:A-Brand";v="24", "Google Chrome";v="134"' \
+  -H 'sec-ch-ua-mobile: ?0' \
+  -H 'sec-ch-ua-platform: "macOS"' \
+  -H 'sec-fetch-dest: empty' \
+  -H 'sec-fetch-mode: cors' \
+  -H 'sec-fetch-site: same-origin' \
+  -H 'user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36' \
+  --data-raw '{"Adi":"KingVon","TurnuvaId":"34","TakimKisiIdler":[]}'
