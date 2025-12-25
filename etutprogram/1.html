@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Etüt Kayıt Sistemi</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .container {
+            display: flex;
+            justify-content: space-between;
+            max-width: 900px;
+            margin: auto;
+        }
+        .form-container {
+            width: 45%;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .form-group {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .form-group label {
+            width: 30%;
+        }
+        .form-group input, .form-group select {
+            width: 65%;
+            padding: 5px;
+        }
+        .student-list {
+            width: 50%;
+            border: 1px solid #ccc;
+            padding: 10px;
+            height: 400px;
+            overflow-y: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="form-container">
+            <h2>Etüt Kayıt Sistemi</h2>
+            <form id="etutForm">
+                <div class="form-group">
+                    <label for="sube">Şube:</label>
+                    <input type="text" id="sube" placeholder="Şube adını girin">
+                </div>
+                <div class="form-group">
+                    <label for="duzey">Düzey:</label>
+                    <input type="text" id="duzey" placeholder="Düzeyi girin">
+                </div>
+                <div class="form-group">
+                    <label for="sinif">Sınıf:</label>
+                    <input type="text" id="sinif" placeholder="Sınıfı girin">
+                </div>
+                <div class="form-group">
+                    <label for="ogretmen">Öğretmen:</label>
+                    <input type="text" id="ogretmen" placeholder="Öğretmen adını girin">
+                </div>
+                <div class="form-group">
+                    <label for="ders">Ders:</label>
+                    <input type="text" id="ders" placeholder="Dersi girin">
+                </div>
+                <div class="form-group">
+                    <label for="derslik">Derslik:</label>
+                    <input type="text" id="derslik" placeholder="Dersliği girin">
+                </div>
+                <div class="form-group">
+                    <label for="tekrarla">Tekrarla:</label>
+                    <input type="date" id="tekrarla">
+                </div>
+                <div class="form-group">
+                    <label for="ogrenci">Öğrenci Adı:</label>
+                    <input type="text" id="ogrenci" placeholder="Öğrenci adını girin">
+                </div>
+                <button type="button" onclick="kaydetOgrenci()">Kaydet</button>
+            </form>
+        </div>
+        <div class="student-list">
+            <h3>Kayıtlı Öğrenciler</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Şube</th>
+                        <th>Düzey</th>
+                        <th>Sınıf</th>
+                        <th>Öğretmen</th>
+                        <th>Ders</th>
+                        <th>Tekrarla</th>
+                        <th>Öğrenci</th>
+                    </tr>
+                </thead>
+                <tbody id="ogrenciTablo">
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script>
+        function kaydetOgrenci() {
+            var sube = document.getElementById("sube").value;
+            var duzey = document.getElementById("duzey").value;
+            var sinif = document.getElementById("sinif").value;
+            var ogretmen = document.getElementById("ogretmen").value;
+            var ders = document.getElementById("ders").value;
+            var tekrarla = document.getElementById("tekrarla").value;
+            var ogrenciAdi = document.getElementById("ogrenci").value;
+
+            if (ogrenciAdi.trim() !== "") {
+                var tablo = document.getElementById("ogrenciTablo");
+                var yeniSatir = tablo.insertRow();
+                yeniSatir.insertCell(0).textContent = sube;
+                yeniSatir.insertCell(1).textContent = duzey;
+                yeniSatir.insertCell(2).textContent = sinif;
+                yeniSatir.insertCell(3).textContent = ogretmen;
+                yeniSatir.insertCell(4).textContent = ders;
+                yeniSatir.insertCell(5).textContent = tekrarla;
+                yeniSatir.insertCell(6).textContent = ogrenciAdi;
+
+                document.getElementById("ogrenci").value = "";
+            }
+        }
+    </script>
+</body>
+</html>
