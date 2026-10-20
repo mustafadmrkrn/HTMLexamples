@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dinamik Ders Programı Oluşturucu</title>
+  
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- html2pdf.js CDN (PDF İndirme İşlevi İçin) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    
+    /* Özel Kaydırma Çubuğu (Scrollbar) Tasarımı */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+
+    /* Sürükle-Bırak Efektleri */
+    .drag-over {
+      background-color: #e0f2fe !important;
+      border: 2px dashed #0284c7 !important;
+    }
+    .dragging {
+      opacity: 0.5;
+      transform: scale(0.98);
+    }
+
+    /* PDF ve Yazdırma Kuralları */
+    @media print {
+      .no-print {
+        display: none !important;
+      }
+      body {
+        background: white !important;
+      }
+    }
+    .pdf-hide {
+      display: none !important;
+    }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-800 h-screen overflow-hidden flex select-none">
+
+  <!-- ================= SOL PANEL (ARAÇLAR - 1/4) ================= -->
+  <aside class="w-1/4 min-w-[320px] max-w-[400px] h-full bg-white shadow-xl flex flex-col justify-between border-r border-slate-200 z-10">
+    <div class="p-6 overflow-y-auto flex-1 space-y-6">
+      
+      <!-- Başlık -->
+      <div class="flex items-center space-x-3 pb-4 border-b border-slate-200">
+        <div class="w-10 h-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center shadow-md shadow-indigo-200">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+          </svg>
+        </div>
+        <div>
+          <h1 class="text-xl font-bold text-slate-900 leading-tight">Program Menüsü</h1>
+          <p class="text-xs text-slate-500 font-medium">Haftalık Planlayıcı</p>
+        </div>
+      </div>
+
+      <!-- Öğrenci Bilgileri -->
+      <div class="space-y-3">
+        <h2 class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Öğrenci Bilgileri</h2>
+        <div>
+          <label class="block text-xs font-medium text-slate-600 mb-1">Öğrenci Adı Soyadı</label>
+          <input type="text" id="studentNameInput" placeholder="Örn: Ahmet Yılmaz" value="Ahmet Yılmaz" class="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-150">
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-slate-600 mb-1">Sınıf / Şube</label>
+          <input type="text" id="studentClassInput" placeholder="Örn: 11-A Fen" value="11-A Fen" class="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-150">
+        </div>
+      </div>
+
+      <!-- Ders Oluşturucu -->
+      <div class="space-y-3 pt-2 border-t border-slate-100">
+        <h2 class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Ders Oluşturucu</h2>
+        <div class="flex items-center space-x-2">
+          <input type="text" id="newCourseName" placeholder="Ders adı (Örn: Biyoloji)" class="flex-1 px-3.5 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition">
+          <div class="relative flex items-center">
+            <input type="color" id="newCourseColor" value="#f59e0b" title="Ders Rengi Seç" class="w-10 h-9 p-0.5 rounded-lg border border-slate-200 cursor-pointer bg-white">
+          </div>
+        </div>
+        <button id="addCourseBtn" type="button" class="w-full py-2.5 px-4 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-sm font-semibold rounded-lg flex items-center justify-center space-x-1.5 transition active:scale-[0.99]">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+          </svg>
+          <span>Dersi Palete Ekle</span>
+        </button>
+      </div>
+
+      <!-- Ders Paleti -->
+      <div class="space-y-3 pt-2 border-t border-slate-100">
+        <div class="flex items-center justify-between">
+          <h2 class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Ders Paleti</h2>
+          <span class="text-[11px] text-slate-400">Tabloya sürükleyin</span>
+        </div>
+        <div id="coursePalette" class="flex flex-wrap gap-2 p-3 bg-slate-50 rounded-xl border border-slate-200/80 min-h-[110px] items-start content-start">
+          <!-- Varsayılan Dersler -->
+          <div draggable="true" class="course-pill cursor-grab active:cursor-grabbing px-3.5 py-1.5 rounded-full text-xs font-semibold text-white shadow-sm flex items-center space-x-1.5 select-none hover:shadow-md transition duration-150" style="background-color: #ef4444;" data-course="Matematik" data-color="#ef4444">
+            <span class="w-2 h-2 rounded-full bg-white/70"></span><span class="course-title">Matematik</span>
+          </div>
+          <div draggable="true" class="course-pill cursor-grab active:cursor-grabbing px-3.5 py-1.5 rounded-full text-xs font-semibold text-white shadow-sm flex items-center space-x-1.5 select-none hover:shadow-md transition duration-150" style="background-color: #3b82f6;" data-course="Fizik" data-color="#3b82f6">
+            <span class="w-2 h-2 rounded-full bg-white/70"></span><span class="course-title">Fizik</span>
+          </div>
+          <div draggable="true" class="course-pill cursor-grab active:cursor-grabbing px-3.5 py-1.5 rounded-full text-xs font-semibold text-white shadow-sm flex items-center space-x-1.5 select-none hover:shadow-md transition duration-150" style="background-color: #10b981;" data-course="Kimya" data-color="#10b981">
+            <span class="w-2 h-2 rounded-full bg-white/70"></span><span class="course-title">Kimya</span>
+          </div>
+          <div draggable="true" class="course-pill cursor-grab active:cursor-grabbing px-3.5 py-1.5 rounded-full text-xs font-semibold text-white shadow-sm flex items-center space-x-1.5 select-none hover:shadow-md transition duration-150" style="background-color: #8b5cf6;" data-course="Edebiyat" data-color="#8b5cf6">
+            <span class="w-2 h-2 rounded-full bg-white/70"></span><span class="course-title">Edebiyat</span>
+          </div>
+          <div draggable="true" class="course-pill cursor-grab active:cursor-grabbing px-3.5 py-1.5 rounded-full text-xs font-semibold text-white shadow-sm flex items-center space-x-1.5 select-none hover:shadow-md transition duration-150" style="background-color: #f97316;" data-course="Tarih" data-color="#f97316">
+            <span class="w-2 h-2 rounded-full bg-white/70"></span><span class="course-title">Tarih</span>
+          </div>
+          <div draggable="true" class="course-pill cursor-grab active:cursor-grabbing px-3.5 py-1.5 rounded-full text-xs font-semibold text-white shadow-sm flex items-center space-x-1.5 select-none hover:shadow-md transition duration-150" style="background-color: #06b6d4;" data-course="İngilizce" data-color="#06b6d4">
+            <span class="w-2 h-2 rounded-full bg-white/70"></span><span class="course-title">İngilizce</span>
+          </div>
+          <div draggable="true" class="course-pill cursor-grab active:cursor-grabbing px-3.5 py-1.5 rounded-full text-xs font-semibold text-white shadow-sm flex items-center space-x-1.5 select-none hover:shadow-md transition duration-150" style="background-color: #0d9488;" data-course="Coğrafya" data-color="#0d9488">
+            <span class="w-2 h-2 rounded-full bg-white/70"></span><span class="course-title">Coğrafya</span>
+          </div>
+          <div draggable="true" class="course-pill cursor-grab active:cursor-grabbing px-3.5 py-1.5 rounded-full text-xs font-semibold text-white shadow-sm flex items-center space-x-1.5 select-none hover:shadow-md transition duration-150" style="background-color: #16a34a;" data-course="Biyoloji" data-color="#16a34a">
+            <span class="w-2 h-2 rounded-full bg-white/70"></span><span class="course-title">Biyoloji</span>
+          </div>
+          <div draggable="true" class="course-pill cursor-grab active:cursor-grabbing px-3.5 py-1.5 rounded-full text-xs font-semibold text-white shadow-sm flex items-center space-x-1.5 select-none hover:shadow-md transition duration-150" style="background-color: #d97706;" data-course="Almanca" data-color="#d97706">
+            <span class="w-2 h-2 rounded-full bg-white/70"></span><span class="course-title">Almanca</span>
+          </div>
+          <div draggable="true" class="course-pill cursor-grab active:cursor-grabbing px-3.5 py-1.5 rounded-full text-xs font-semibold text-white shadow-sm flex items-center space-x-1.5 select-none hover:shadow-md transition duration-150" style="background-color: #ec4899;" data-course="Kitap Okuma" data-color="#ec4899">
+            <span class="w-2 h-2 rounded-full bg-white/70"></span><span class="course-title">Kitap Okuma</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Aksiyon Butonları -->
+    <div class="p-6 border-t border-slate-200 bg-slate-50/70 space-y-2.5">
+      <button id="downloadPdfBtn" type="button" class="w-full py-3 px-4 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl shadow-lg shadow-emerald-600/25 flex items-center justify-center space-x-2 transition duration-200 active:scale-[0.98]">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+        </svg>
+        <span>PDF Olarak İndir</span>
+      </button>
+
+      <button id="clearScheduleBtn" type="button" class="w-full py-2.5 px-4 bg-rose-50 hover:bg-rose-100 text-rose-600 font-medium text-sm rounded-xl border border-rose-200 flex items-center justify-center space-x-1.5 transition active:scale-[0.98]">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+        </svg>
+        <span>Tüm Programı Temizle</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ================= SAĞ PANEL (TABLO ALANI - 3/4) ================= -->
+  <main class="w-3/4 flex-1 h-full bg-slate-200 p-6 overflow-y-auto flex items-center justify-center">
+    
+    <!-- PDF Şablon Konteyneri -->
+    <div id="scheduleContainer" class="bg-white rounded-2xl shadow-2xl p-6 w-full max-w-[1240px] border border-slate-300/70 flex flex-col my-auto">
+      
+      <!-- Başlık Alanı -->
+      <div class="flex items-center justify-between pb-4 border-b-2 border-slate-800/80 mb-3">
+        <div class="flex items-center space-x-3">
+          <div class="w-11 h-11 bg-slate-900 text-white rounded-xl flex items-center justify-center shadow-md">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+            </svg>
+          </div>
+          <div>
+            <h2 class="text-2xl font-black tracking-tight text-slate-900 uppercase">Haftalık Ders Programı</h2>
+            <p class="text-xs text-slate-500 font-medium">Akademik Çalışma & Ders Planı</p>
+          </div>
+        </div>
+
+        <!-- Dinamik Öğrenci Bilgileri -->
+        <div class="flex items-center space-x-4 bg-slate-50 border border-slate-200/90 rounded-xl px-4 py-2 text-right">
+          <div>
+            <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Öğrenci</div>
+            <div id="previewStudentName" class="text-sm font-bold text-slate-800">Ahmet Yılmaz</div>
+          </div>
+          <div class="w-px h-8 bg-slate-200"></div>
+          <div>
+            <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Sınıf</div>
+            <div id="previewStudentClass" class="text-sm font-bold text-indigo-600">11-A Fen</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Zaman Tablosu -->
+      <div class="overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-sm">
+        <table class="w-full border-collapse text-center">
+          <thead>
+            <tr class="bg-slate-900 text-white text-xs font-semibold">
+              <th class="py-2.5 px-2 w-[85px] border-r border-slate-800 uppercase tracking-wider">Saat</th>
+              <th class="py-2.5 px-2 border-r border-slate-800 uppercase tracking-wider">Pazartesi</th>
+              <th class="py-2.5 px-2 border-r border-slate-800 uppercase tracking-wider">Salı</th>
+              <th class="py-2.5 px-2 border-r border-slate-800 uppercase tracking-wider">Çarşamba</th>
+              <th class="py-2.5 px-2 border-r border-slate-800 uppercase tracking-wider">Perşembe</th>
+              <th class="py-2.5 px-2 border-r border-slate-800 uppercase tracking-wider">Cuma</th>
+              <th class="py-2.5 px-2 border-r border-slate-800 uppercase tracking-wider text-amber-300">Cumartesi</th>
+              <th class="py-2.5 px-2 uppercase tracking-wider text-rose-300">Pazar</th>
+            </tr>
+          </thead>
+          <tbody id="scheduleTableBody" class="text-xs divide-y divide-slate-200">
+            <!-- Satırlar JavaScript ile 10:00 - 23:00 arası otomatik oluşturulur -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Footer -->
+      <div class="mt-3 pt-2.5 flex items-center justify-between text-[11px] text-slate-400 border-t border-slate-100">
+        <span>© Dinamik Ders Programı Oluşturucu</span>
+        <span>Başarı, düzenli ve disiplinli çalışmanın sonucudur.</span>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ================= JAVASCRIPT (İşlevler) ================= -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      
+      // 1. Tablo Satırlarını Oluştur (10:00 - 23:00)
+      const tableBody = document.getElementById('scheduleTableBody');
+      const startHour = 10;
+      const endHour = 23;
+      const days = ['pazartesi', 'sali', 'carsamba', 'persembe', 'cuma', 'cumartesi', 'pazar'];
+
+      let rowsHtml = '';
+      for (let h = startHour; h <= endHour; h++) {
+        const timeLabel = `${String(h).padStart(2, '0')}:00`;
+        const nextTimeLabel = `${String(h + 1).padStart(2, '0')}:00`;
+        const isEven = (h % 2 === 0);
+
+        rowsHtml += `
+          <tr class="${isEven ? 'bg-slate-50/50' : 'bg-white'} hover:bg-slate-50 transition-colors">
+            <td class="py-2 px-1 font-bold text-slate-700 bg-slate-100/80 border-r border-slate-200 text-[11px]">
+              ${timeLabel}<br><span class="text-[9px] font-normal text-slate-400">${nextTimeLabel}</span>
+            </td>
+            ${days.map(day => `
+              <td class="droppable-cell p-1 border-r border-slate-200 last:border-r-0 h-10 w-[12.5%] transition duration-150 align-middle relative"
+                  data-day="${day}" 
+                  data-hour="${h}">
+              </td>
+            `).join('')}
+          </tr>
+        `;
+      }
+      tableBody.innerHTML = rowsHtml;
+
+      // 2. Veri Senkronizasyonu
+      const nameInput = document.getElementById('studentNameInput');
+      const classInput = document.getElementById('studentClassInput');
+      const previewName = document.getElementById('previewStudentName');
+      const previewClass = document.getElementById('previewStudentClass');
+
+      nameInput.addEventListener('input', (e) => previewName.textContent = e.target.value.trim() || 'İsimsiz Öğrenci');
+      classInput.addEventListener('input', (e) => previewClass.textContent = e.target.value.trim() || '-');
+
+      // 3. Sürükle - Bırak (Drag & Drop)
+      let draggedData = null; 
+
+      function attachPaletteDraggable(element) {
+        element.addEventListener('dragstart', (e) => {
+          draggedData = {
+            title: element.getAttribute('data-course'),
+            color: element.getAttribute('data-color'),
+            fromCell: null
+          };
+          element.classList.add('dragging');
+          e.dataTransfer.setData('text/plain', JSON.stringify(draggedData));
+          e.dataTransfer.effectAllowed = 'copyMove';
+        });
+
+        element.addEventListener('dragend', () => {
+          element.classList.remove('dragging');
+          draggedData = null;
+        });
+      }
+
+      document.querySelectorAll('#coursePalette .course-pill').forEach(attachPaletteDraggable);
+      const cells = document.querySelectorAll('.droppable-cell');
+
+      cells.forEach(cell => {
+        cell.addEventListener('dragover', (e) => {
+          e.preventDefault();
+          e.dataTransfer.dropEffect = 'copy';
+          cell.classList.add('drag-over');
+        });
+
+        cell.addEventListener('dragleave', () => cell.classList.remove('drag-over'));
+
+        cell.addEventListener('drop', (e) => {
+          e.preventDefault();
+          cell.classList.remove('drag-over');
+
+          let data = draggedData;
+          if (!data) {
+            try { data = JSON.parse(e.dataTransfer.getData('text/plain')); } 
+            catch (err) { return; }
+          }
+
+          if (data && data.title && data.color) {
+            cell.innerHTML = '';
+            const card = createTableCellCard(data.title, data.color, cell);
+            cell.appendChild(card);
+            if (data.fromCell && data.fromCell !== cell) data.fromCell.innerHTML = '';
+          }
+        });
+      });
+
+      function createTableCellCard(title, color, parentCell) {
+        const card = document.createElement('div');
+        card.className = 'group relative w-full h-full min-h-[34px] rounded-lg text-white font-medium text-xs flex items-center justify-center shadow-sm select-none cursor-move transition-transform active:scale-95 px-2';
+        card.style.backgroundColor = color;
+        card.setAttribute('draggable', 'true');
+        card.setAttribute('data-course', title);
+        card.setAttribute('data-color', color);
+
+        const textSpan = document.createElement('span');
+        textSpan.className = 'truncate pointer-events-none text-[11px] font-semibold';
+        textSpan.textContent = title;
+        card.appendChild(textSpan);
+
+        const deleteBtn = document.createElement('button');
+        deleteBtn.className = 'pdf-ignore absolute -top-1.5 -right-1.5 w-4 h-4 bg-white text-rose-600 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow-md hover:bg-rose-50 text-[10px] font-bold border border-rose-200 z-10';
+        deleteBtn.innerHTML = '&times;';
+        deleteBtn.title = 'Dersi Sil';
+        deleteBtn.onclick = (e) => { e.stopPropagation(); parentCell.innerHTML = ''; };
+        card.appendChild(deleteBtn);
+
+        card.addEventListener('dragstart', (e) => {
+          draggedData = { title: title, color: color, fromCell: parentCell };
+          card.classList.add('dragging');
+          e.dataTransfer.setData('text/plain', JSON.stringify(draggedData));
+          e.dataTransfer.effectAllowed = 'move';
+        });
+
+        card.addEventListener('dragend', () => {
+          card.classList.remove('dragging');
+          draggedData = null;
+        });
+
+        return card;
+      }
+
+      // 4. Yeni Ders Ekleme
+      const addCourseBtn = document.getElementById('addCourseBtn');
+      const newCourseNameInput = document.getElementById('newCourseName');
+      const newCourseColorInput = document.getElementById('newCourseColor');
+      const coursePalette = document.getElementById('coursePalette');
+
+      function addNewCourse() {
+        const courseName = newCourseNameInput.value.trim();
+        const courseColor = newCourseColorInput.value;
+
+        if (!courseName) {
+          newCourseNameInput.focus();
+          newCourseNameInput.classList.add('ring-2', 'ring-rose-500');
+          setTimeout(() => newCourseNameInput.classList.remove('ring-2', 'ring-rose-500'), 1500);
+          return;
+        }
+
+        const pill = document.createElement('div');
+        pill.className = 'course-pill cursor-grab active:cursor-grabbing px-3.5 py-1.5 rounded-full text-xs font-semibold text-white shadow-sm flex items-center space-x-1.5 select-none hover:shadow-md transition duration-150 animate-fade-in';
+        pill.style.backgroundColor = courseColor;
+        pill.setAttribute('draggable', 'true');
+        pill.setAttribute('data-course', courseName);
+        pill.setAttribute('data-color', courseColor);
+        pill.innerHTML = `<span class="w-2 h-2 rounded-full bg-white/70"></span><span class="course-title">${courseName}</span>`;
+
+        attachPaletteDraggable(pill);
+        coursePalette.appendChild(pill);
+        newCourseNameInput.value = '';
+        newCourseNameInput.focus();
+      }
+
+      addCourseBtn.addEventListener('click', addNewCourse);
+      newCourseNameInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') addNewCourse(); });
+
+      // 5. Temizle Butonu
+      document.getElementById('clearScheduleBtn').addEventListener('click', () => {
+        if (confirm('Tüm haftalık ders programını temizlemek istediğinize emin misiniz?')) {
+          cells.forEach(c => c.innerHTML = '');
+        }
+      });
+
+      // 6. PDF İndirme
+      const downloadPdfBtn = document.getElementById('downloadPdfBtn');
+      downloadPdfBtn.addEventListener('click', () => {
+        const scheduleElement = document.getElementById('scheduleContainer');
+        const studentName = document.getElementById('studentNameInput').value.trim() || 'Ogrenci';
+        const sanitizedName = studentName.replace(/[^a-zA-Z0-9çğıöşüÇĞİÖŞÜ\s_-]/g, '').replace(/\s+/g, '_');
+        const filename = `${sanitizedName}_Haftalik_Ders_Programi.pdf`;
+
+        document.querySelectorAll('.pdf-ignore').forEach(el => el.classList.add('pdf-hide'));
+
+        const opt = {
+          margin: [8, 8, 8, 8],
+          filename: filename,
+          image: { type: 'jpeg', quality: 0.98 },
+          html2canvas: { scale: 2, useCORS: true, letterRendering: true },
+          jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' }
+        };
+
+        const originalBtnText = downloadPdfBtn.innerHTML;
+        downloadPdfBtn.disabled = true;
+        downloadPdfBtn.innerHTML = `Hazırlanıyor...`;
+
+        html2pdf().set(opt).from(scheduleElement).save().then(() => {
+          document.querySelectorAll('.pdf-ignore').forEach(el => el.classList.remove('pdf-hide'));
+          downloadPdfBtn.disabled = false;
+          downloadPdfBtn.innerHTML = originalBtnText;
+        }).catch(err => {
+          console.error('PDF hatası:', err);
+          document.querySelectorAll('.pdf-ignore').forEach(el => el.classList.remove('pdf-hide'));
+          downloadPdfBtn.disabled = false;
+          downloadPdfBtn.innerHTML = originalBtnText;
+          alert('PDF oluşturulurken bir sorun meydana geldi.');
+        });
+      });
+
+    });
+  </script>
+</body>
+</html>
